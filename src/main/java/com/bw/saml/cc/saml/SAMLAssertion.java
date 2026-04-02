@@ -1,6 +1,7 @@
 package com.bw.saml.cc.saml;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.opensaml.saml2.core.*;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
@@ -33,10 +34,12 @@ public class SAMLAssertion
     */
     public Assertion createStockAuthnAssertion (String idpEntityId,String assertionId,String spEntityId)
     {
-        DateTime now = new DateTime ();
+        DateTime now = new DateTime (DateTimeZone.UTC);
         Issuer issuer = create (Issuer.class, Issuer.DEFAULT_ELEMENT_NAME);
         issuer.setValue (idpEntityId);
-        
+
+        now = now.plusHours(8);
+
         /*NameID nameID = create (NameID.class, NameID.DEFAULT_ELEMENT_NAME);
         nameID.setValue ("harold_dt");
         
@@ -47,7 +50,7 @@ public class SAMLAssertion
             (Conditions.class, Conditions.DEFAULT_ELEMENT_NAME);
         conditions.setNotBefore (now.minusSeconds (15));
         conditions.setNotOnOrAfter (now.plusSeconds (30));
-        AudienceRestriction audienceRestriction = create(AudienceRestriction.class,AudienceRestriction.DEFAULT_ELEMENT_NAME);
+        AudienceRestriction audienceRestriction = create(AudienceRestriction.class, AudienceRestriction.DEFAULT_ELEMENT_NAME);
         Audience audience = create(Audience.class,Audience.DEFAULT_ELEMENT_NAME);
         audience.setAudienceURI(spEntityId);
         audienceRestriction.getAudiences().add(audience);

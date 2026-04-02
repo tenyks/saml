@@ -30,6 +30,7 @@ public class IdpController {
     private SamlResponseGenerator samlResponseGenerator;
     @Autowired
     private SamlRequestCache samlRequestCache;
+
     @GetMapping("/sso")
     public void sso(String SAMLRequest, HttpServletRequest request,HttpServletResponse response) throws Exception {
         System.out.println("samlRequest = " + SAMLRequest);
@@ -68,8 +69,9 @@ public class IdpController {
     @PostMapping("/auth")
     public LoginResponse login(String username, String password, HttpServletRequest req, HttpServletResponse res) throws Exception {
         LoginResponse loginResponse = new LoginResponse();
-        if ("admin".equals(username) && "admin".equals(password)) {
-            String email = "test@qq.com";
+
+        if ("jszn_idp_test".equals(username) && "Yixun@li2026".equals(password)) {
+            String email = "jszn_idp_test@qq.com";
             //鉴权通过
             System.out.println("auth pass...");
             AuthnRequestField authnRequestField = authnRequestHandler.handleAuthnRequest(samlRequestCache.getSAMLRequest());
@@ -79,12 +81,16 @@ public class IdpController {
             Cookie cookie = new Cookie(Constants.IDP_COOKIE_KEY,Constants.IDP_COOKIE_VALUE);
             cookie.setPath("/");
             res.addCookie(cookie);
+
+            System.out.println("SAMLResponse => " + result);
+
             PrintWriter printWriter = res.getWriter();
             printWriter.write(samlResponseGenerator.getForm(authnRequestField.getAssertionConsumerServiceUrl(), new Base64().encodeAsString(result.getBytes("utf-8"))));
             printWriter.flush();
             printWriter.close();
             return null;
         }
+
         loginResponse.setCode(1);
         return loginResponse;
     }

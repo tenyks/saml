@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor ID="_466ed1359dae44f3908b6d832e2a686b"
+                     entityID="http://MyLinuxPC:48080/idp"
+                     validUntil="2029-04-01T07:41:46.893Z" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+<!--    <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">-->
+<!--        <ds:SignedInfo>-->
+<!--            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>-->
+<!--            <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>-->
+<!--            <ds:Reference URI="#_466ed1359dae44f3908b6d832e2a686b">-->
+<!--                <ds:Transforms>-->
+<!--                    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>-->
+<!--                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>-->
+<!--                </ds:Transforms>-->
+<!--                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>-->
+<!--                <ds:DigestValue>L1OMiW/AUJf+e7EEnONJdvW2aVg+YqDfAK1213AxhgU=</ds:DigestValue>-->
+<!--            </ds:Reference>-->
+<!--        </ds:SignedInfo>-->
+<!--        <ds:SignatureValue>-->
+<!--            q8/ktWO8obkSfEuVHZv/sMtTYpqqriJMAZb/mtk0jdVN9MRTwjNTIn4Ozf5hE2aqz2080tRQAfds&#xd;-->
+<!--            1jLuRjXq5+S1QSsL5HsuJgoumm14iG9Y9VvWt7ZsGQ6olSgj0Pm6GrxCrOtyJuourOVL94jC4tO+&#xd;-->
+<!--            bK9EPbpAIGZX9KvR4GjxUojNWT0m4uqLuYKnOd0qZYAnXvg1R6tHRRDOPBVRdo5Qr98FEgaRKe4X&#xd;-->
+<!--            7m/aO2em+cj288s/oJFQZvO5iIQYTpZOxp1ot34zdvBH7L852tbIlvbuaTYiD9q6pLtm+u9vNGoY&#xd;-->
+<!--            tem9QI/oKgtCdzCXWBDeP5T41WV84CFuoKVvjIKj2FybAtCJoqmubGdkq7PWneTMSKjrX59dfBPG&#xd;-->
+<!--            g8xPXE5TiBRR4W8P701lA5jkHEqyCgqKVyfXB4BLHkZT2Dtbj0ysF/jqGgODbrHP3Bc6Z8HkUQwl&#xd;-->
+<!--            K6e9RdO/BYm1eii84sH/QPRTveLSdYdsr2p4yWfbyPrWSBNZZEEVtbZl-->
+<!--        </ds:SignatureValue>-->
+<!--    </ds:Signature>-->
+    <md:IDPSSODescriptor WantAuthnRequestsSigned="true"
+                         protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"
+                         xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+        <md:Extensions>
+            <alg:SigningMethod
+                    Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"
+                    xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+        </md:Extensions>
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIICcjCCAdugAwIBAgIEYUV9sjANBgkqhkiG9w0BAQsFADBsMRAwDgYDVQQGEwdVbmtub3duMRAwDgYDVQQIEwdVbmtub3duMRAwDgYDVQQHEwdVbmtub3duMRAwDgYDVQQKEwdVbmtub3duMRAwDgYDVQQLEwdVbmtub3duMRAwDgYDVQQDEwdVbmtub3duMB4XDTE3MTIyMTA2NDc0MloXDTI3MTIxOTA2NDc0MlowbDEQMA4GA1UEBhMHVW5rbm93bjEQMA4GA1UECBMHVW5rbm93bjEQMA4GA1UEBxMHVW5rbm93bjEQMA4GA1UEChMHVW5rbm93bjEQMA4GA1UECxMHVW5rbm93bjEQMA4GA1UEAxMHVW5rbm93bjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAtD3CyKRmy7aaTOeBCDiQaqGQu99wEAHqbcXu7/ZkNYGlb9HIGM4ga5rnQqrZIR+1njcss1B+6agRmREu3Db9SKL6OqsdKEY8KZX318VhksoECK1mFvzuwK/S7VAHAay3ApLfBMCC+8sZ7njvByqSo0CAFAcQvu5mtkYPC6xzHX0CAwEAAaMhMB8wHQYDVR0OBBYEFMcXi7CGVHaw7JLJlEi3mSV0ny4QMA0GCSqGSIb3DQEBCwUAA4GBAIM4m+sXq/S5ryxaLf8o/HlKHj+61e6n6vP+zrVnAuXiNNjEI76PQWws+1CpaZq2XI0IC+mY1SwdrvltUTCiTFEv3NA5EhnB6aPUHORX2WF80s6yEq8AZ0IITRL2nxilb+kWxbU/BKLN7qWXcwEI/mKM/Aowha6vYxtnIYy2H8hy
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService
+                Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                Location="http://MyLinuxPC:48080/idp/logout"
+                ResponseLocation="https://auth.air.gdrising.com.cn/mounisso/v1/idp/logout/saml2/slo"/>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:SingleSignOnService
+                Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                Location="http://MyLinuxPC:48080/idp/sso"/>
+    </md:IDPSSODescriptor>
+</md:EntityDescriptor>

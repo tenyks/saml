@@ -30,15 +30,15 @@ public class Constants {
     /**
      * sp的身份标识
      */
-    public static final String SP_ENTITY_ID = "http://localhost:8080/sp";
+    public static final String SP_ENTITY_ID = "auth.air.gdrising.com.cn";
     /**
      * idp的身份标识
      */
-    public static final String IDP_ENTITY_ID = "http://localhost:8080/idp";
+    public static final String IDP_ENTITY_ID = "http://MyLinuxPC:48080/idp";
     /**
      * idp的sso地址
      */
-    public static final String IDP_SSO_URL = "http://localhost:8080/idp/sso";
+    public static final String IDP_SSO_URL = "http://MyLinuxPC:48080/idp/sso";
     /**
      * sp的acs地址
      */

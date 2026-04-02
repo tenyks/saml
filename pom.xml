@@ -15,7 +15,15 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <maven.deploy.skip>true</maven.deploy.skip>
+      <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+      <!--  JDK版本  -->
+      <java.version>8</java.version>
+      <maven.compiler.target>8</maven.compiler.target>
+      <maven.compiler.source>8</maven.compiler.source>
   </properties>
 
   <dependencies>
@@ -118,7 +126,19 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <targetPath>BOOT-INF/classes/</targetPath>
+                <includes>
+                    <include>*.yml</include>
+                    <include>*.properties</include>
+                    <include>*.jks</include>
+                </includes>
+
+            </resource>
+            <resource>
+                <directory>src/main/resources/static</directory>
+                <includes>
+                    <include>*.html</include>
+                </includes>
+                <targetPath>static</targetPath>
             </resource>
         </resources>
 

@@ -1,0 +1,27 @@
+<EntityDescriptor entityID="demoLzyIDP" xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+    <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://MyLinuxPC:48080/idp/sso" />
+<!--        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://idp.example.com/idp/slo" />-->
+        <KeyDescriptor use="signing">
+            <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <X509Data>
+                    <X509Certificate>MIICcjCCAdugAwIBAgIEYUV9sjANBgkqhkiG9w0BAQsFADBsMRAwDgYDVQQGEwdV
+                        bmtub3duMRAwDgYDVQQIEwdVbmtub3duMRAwDgYDVQQHEwdVbmtub3duMRAwDgYD
+                        VQQKEwdVbmtub3duMRAwDgYDVQQLEwdVbmtub3duMRAwDgYDVQQDEwdVbmtub3du
+                        MB4XDTE3MTIyMTA2NDc0MloXDTI3MTIxOTA2NDc0MlowbDEQMA4GA1UEBhMHVW5r
+                        bm93bjEQMA4GA1UECBMHVW5rbm93bjEQMA4GA1UEBxMHVW5rbm93bjEQMA4GA1UE
+                        ChMHVW5rbm93bjEQMA4GA1UECxMHVW5rbm93bjEQMA4GA1UEAxMHVW5rbm93bjCB
+                        nzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAtD3CyKRmy7aaTOeBCDiQaqGQu99w
+                        EAHqbcXu7/ZkNYGlb9HIGM4ga5rnQqrZIR+1njcss1B+6agRmREu3Db9SKL6Oqsd
+                        KEY8KZX318VhksoECK1mFvzuwK/S7VAHAay3ApLfBMCC+8sZ7njvByqSo0CAFAcQ
+                        vu5mtkYPC6xzHX0CAwEAAaMhMB8wHQYDVR0OBBYEFMcXi7CGVHaw7JLJlEi3mSV0
+                        ny4QMA0GCSqGSIb3DQEBCwUAA4GBAIM4m+sXq/S5ryxaLf8o/HlKHj+61e6n6vP+
+                        zrVnAuXiNNjEI76PQWws+1CpaZq2XI0IC+mY1SwdrvltUTCiTFEv3NA5EhnB6aPU
+                        HORX2WF80s6yEq8AZ0IITRL2nxilb+kWxbU/BKLN7qWXcwEI/mKM/Aowha6vYxtn
+                        IYy2H8hy</X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </KeyDescriptor>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+    </IDPSSODescriptor>
+</EntityDescriptor>

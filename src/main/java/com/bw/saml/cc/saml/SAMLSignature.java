@@ -134,6 +134,8 @@ public class SAMLSignature
     */
     public SAMLSignature ()
     {
+        System.out.println("====SAMLSignature====");
+
         try
         {
             Properties props = new Properties ();
@@ -154,8 +156,7 @@ public class SAMLSignature
                 keyStore.getEntry (props.getProperty ("alias"), 
                     new KeyStore.PasswordProtection 
                         (props.getProperty ("keypass").toCharArray ()));
-            keyPair = new KeyPair (entry.getCertificate ().getPublicKey (), 
-                entry.getPrivateKey ());
+            keyPair = new KeyPair (entry.getCertificate ().getPublicKey (), entry.getPrivateKey ());
 
             KeyInfoFactory kFactory = factory.getKeyInfoFactory ();
             keyInfo = kFactory.newKeyInfo 
@@ -255,7 +256,7 @@ public class SAMLSignature
                 (factory.newCanonicalizationMethod
                                 (SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS,
                                         (C14NMethodParameterSpec) null),
-                        factory.newSignatureMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, null),
+                        factory.newSignatureMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null),
                         Collections.singletonList(ref));
 
         XMLSignature signature = factory.newXMLSignature(signedInfo, keyInfo);

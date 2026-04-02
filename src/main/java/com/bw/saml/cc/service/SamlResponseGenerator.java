@@ -5,10 +5,8 @@ import com.bw.saml.cc.saml.SAML;
 import com.bw.saml.cc.saml.SAMLAssertion;
 import com.bw.saml.cc.saml.SAMLSignature;
 import com.bw.saml.constants.Constants;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.Response;
-import org.opensaml.saml2.core.Subject;
+import org.opensaml.saml2.core.*;
+import org.opensaml.saml2.core.impl.AttributeStatementBuilder;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
@@ -18,6 +16,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -57,26 +57,40 @@ public class SamlResponseGenerator {
         init(email,requestField);
         SAML saml = new SAML(Constants.IDP_ENTITY_ID);
         //创建Subject
-        Subject subject = saml.createSubject(email, NameID.EMAIL,"bearer",this.acsUrl);
+        Subject subject = saml.createSubject(email, NameID.EMAIL,"bearer", this.acsUrl, requestField.getRequestId());
+
         //创建断言Assertion
         String assertionId = UUID.randomUUID().toString();
         SAMLAssertion samlAssertion = new SAMLAssertion();
-        Assertion assertion = samlAssertion.createStockAuthnAssertion(Constants.IDP_ENTITY_ID,assertionId,spEntityId);
+        Assertion assertion = samlAssertion.createStockAuthnAssertion(Constants.IDP_ENTITY_ID, assertionId, spEntityId);
         assertion.setSubject(subject);
+
+        AttributeStatementBuilder attrBuilder = new AttributeStatementBuilder();
+        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_xUserId", "jszn_idp_test"));
+//        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_name", "jszn_idp_test"));
+//        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_redirect_url", ""));
+        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_domain_id", "b074064339c043a3a7e522e0756ab73c"));
+//        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_domain_id", "769f0a57995d4c1d8856710f3c79a8bb"));
+        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_idp_id", "idp_gs_saml_iam_new"));
+
         //创建response
-        Response response = saml.createResponse(assertion,inResponseTo);
+        Response response = saml.createResponse(assertion, inResponseTo);
         //签名
         SAMLSignature samlSignature = new SAMLSignature();
         Document document = saml.asDOMDocument(response);
-        samlSignature.signSAMLObject(document,assertionId, document.getElementsByTagName("saml:Assertion").item(0));
-        DOMSource source=new DOMSource(document);
+
+        samlSignature.signSAMLObject(document, assertionId, document.getElementsByTagName("saml:Assertion").item(0));
+        DOMSource source = new DOMSource(document);
+
         TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer former=tf.newTransformer();
+        Transformer former = tf.newTransformer();
         former.setOutputProperty(OutputKeys.STANDALONE, "yes");
         StringWriter sw = new StringWriter();
         StreamResult sr = new StreamResult(sw);
         former.transform(source, sr);
-        String result=sw.toString();
+        String result = sw.toString();
+
+//        result = result.replace("<DigestValue>", "<DigestValue>EE");
         return result;
     }
 

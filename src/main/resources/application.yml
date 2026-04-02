@@ -1,0 +1,15 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  application:
+    name: main-app
+server:
+  port: 48080
+
+
+# Logger Config
+logging:
+  level:
+    ROOT: INFO

@@ -72,21 +72,19 @@ public class SAML
             if (type.equals ("authn"))
                 handler.printToFile (handler.createAuthnAssertion 
                     (handler.createSubject 
-                        ("harold_dt", null, "sender-vouches",null),
+                        ("harold_dt", null, "sender-vouches",null, null),
                             AuthnContext.PPT_AUTHN_CTX), 
                     null);
 
             else if (type.equals ("attr"))
             {
                 Subject subject = handler.createSubject 
-                    ("louisdraper@abc.gov", NameID.EMAIL, null,null);
+                    ("louisdraper@abc.gov", NameID.EMAIL, null,null, null);
                     
                 Map<String,String> attributes = new HashMap<String,String> ();
                 attributes.put ("securityClearance", "C2");
                 attributes.put ("roles", "editor,reviewer");
-                handler.printToFile 
-                    (handler.createAttributeAssertion (subject, attributes), 
-                        null);
+                handler.printToFile(handler.createAttributeAssertion (subject, attributes), null);
             }
             else
             {
@@ -240,40 +238,42 @@ public class SAML
         
         return result;
     }
-    
+
     /**
-    Returns a SAML subject.
-    
-    @param username The subject name
-    @param format If non-null, we'll set as the subject name format
-    @param confirmationMethod If non-null, we'll create a SubjectConfirmation
-        element and use this as the Method attribute; must be "sender-vouches"
-        or "bearer", as HOK would require additional parameters and so is NYI
-    */
+     * Returns a SAML subject.
+     *
+     * @param username           The subject name
+     * @param format             If non-null, we'll set as the subject name format
+     * @param confirmationMethod If non-null, we'll create a SubjectConfirmation
+     *                           element and use this as the Method attribute; must be "sender-vouches"
+     *                           or "bearer", as HOK would require additional parameters and so is NYI
+     */
     public Subject createSubject
-        (String username, String format, String confirmationMethod,String recipient)
-    {
-        NameID nameID = create (NameID.class, NameID.DEFAULT_ELEMENT_NAME);
-        nameID.setValue (username);
+    (String username, String format, String confirmationMethod, String recipient, String requestId) {
+
+        NameID nameID = create(NameID.class, NameID.DEFAULT_ELEMENT_NAME);
+        nameID.setValue(username);
         if (format != null)
-            nameID.setFormat (format);
-        
-        Subject subject = create (Subject.class, Subject.DEFAULT_ELEMENT_NAME);
-        subject.setNameID (nameID);
-        
-        if (confirmationMethod != null)
-        {
-            SubjectConfirmation confirmation = create 
-                (SubjectConfirmation.class, 
-                    SubjectConfirmation.DEFAULT_ELEMENT_NAME);
-            confirmation.setMethod (CM_PREFIX + confirmationMethod);
-            SubjectConfirmationData confirmationData = create(SubjectConfirmationData.class,SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
+            nameID.setFormat(format);
+
+        Subject subject = create(Subject.class, Subject.DEFAULT_ELEMENT_NAME);
+        subject.setNameID(nameID);
+
+        if (confirmationMethod != null) {
+            SubjectConfirmation confirmation = create
+                    (SubjectConfirmation.class,
+                            SubjectConfirmation.DEFAULT_ELEMENT_NAME);
+            confirmation.setMethod(CM_PREFIX + confirmationMethod);
+            SubjectConfirmationData confirmationData = create(SubjectConfirmationData.class, SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
             confirmationData.setRecipient(recipient);
+            confirmationData.setInResponseTo(requestId);
+            confirmationData.setNotOnOrAfter(new DateTime(System.currentTimeMillis() + 7200000));
+
             confirmation.setSubjectConfirmationData(confirmationData);
-            subject.getSubjectConfirmations ().add (confirmation);
+            subject.getSubjectConfirmations().add(confirmation);
         }
 
-        return subject;        
+        return subject;
     }
     
     /**
@@ -374,6 +374,17 @@ public class SAML
         
         return response;
     }
+
+    public Response createResponse (Assertion assertion1, Assertion assertion2, String inResponseTo)
+    {
+        Response response =
+                createResponse (StatusCode.SUCCESS_URI, inResponseTo);
+
+        response.getAssertions().add(assertion1);
+        response.getAssertions().add(assertion2);
+
+        return response;
+    }
     
     /**
     Returns a SAML authentication assertion.
@@ -458,5 +469,12 @@ public class SAML
         assertion.getStatements ().add (statement);
 
         return assertion;
+    }
+
+    public AttributeStatement buildAttributeStatement(String key, String value) {
+        AttributeStatement statement = create (AttributeStatement.class, AttributeStatement.DEFAULT_ELEMENT_NAME);
+        addAttribute(statement, key, value);
+
+        return statement;
     }
 }
