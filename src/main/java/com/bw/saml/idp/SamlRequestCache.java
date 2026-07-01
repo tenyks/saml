@@ -11,11 +11,21 @@ public class SamlRequestCache {
 
     private String SAMLRequest;
 
+    private String RelayState;
+
     public String getSAMLRequest() {
         return SAMLRequest;
     }
 
     public void setSAMLRequest(String SAMLRequest) {
         this.SAMLRequest = SAMLRequest;
+    }
+
+    public String getRelayState() {
+        return RelayState;
+    }
+
+    public void setRelayState(String relayState) {
+        RelayState = relayState;
     }
 }

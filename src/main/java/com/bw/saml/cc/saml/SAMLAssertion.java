@@ -48,8 +48,8 @@ public class SAMLAssertion
         
         Conditions conditions = create 
             (Conditions.class, Conditions.DEFAULT_ELEMENT_NAME);
-        conditions.setNotBefore (now.minusSeconds (15));
-        conditions.setNotOnOrAfter (now.plusSeconds (30));
+        conditions.setNotBefore (now.minusSeconds (2000));
+        conditions.setNotOnOrAfter (now.plusSeconds (4000));
         AudienceRestriction audienceRestriction = create(AudienceRestriction.class, AudienceRestriction.DEFAULT_ELEMENT_NAME);
         Audience audience = create(Audience.class,Audience.DEFAULT_ELEMENT_NAME);
         audience.setAudienceURI(spEntityId);
@@ -131,7 +131,7 @@ public class SAMLAssertion
         
         Conditions conditions = create 
             (Conditions.class, Conditions.DEFAULT_ELEMENT_NAME);
-        conditions.setNotBefore (now.minusMinutes (15));
+        conditions.setNotBefore (now.minusMinutes (30));
         conditions.setNotOnOrAfter (now.plusMinutes (30));
         
         // Build attribute values as XMLObjects;
@@ -220,10 +220,10 @@ public class SAMLAssertion
         Subject subject = create (Subject.class, Subject.DEFAULT_ELEMENT_NAME);
         subject.setNameID (nameID);
         
-        Conditions conditions = create 
-            (Conditions.class, Conditions.DEFAULT_ELEMENT_NAME);
-        conditions.setNotBefore (now.minusMinutes (15));
-        conditions.setNotOnOrAfter (now.plusMinutes (30));
+//        Conditions conditions = create
+//            (Conditions.class, Conditions.DEFAULT_ELEMENT_NAME);
+//        conditions.setNotBefore (now.minusMinutes (150));
+//        conditions.setNotOnOrAfter (now.plusMinutes (300));
         
         Action action = create (Action.class, Action.DEFAULT_ELEMENT_NAME);
         action.setAction ("read");

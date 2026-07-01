@@ -45,7 +45,7 @@
         <md:SingleLogoutService
                 Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
                 Location="http://MyLinuxPC:48080/idp/logout"
-                ResponseLocation="https://auth.air.gdrising.com.cn/mounisso/v1/idp/logout/saml2/slo"/>
+                ResponseLocation="https://auth.air.gdrising.com.cn/mounisso/v1/cas/logout"/>
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
         <md:SingleSignOnService
                 Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"

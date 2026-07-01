@@ -298,9 +298,9 @@ public class SAML
 
         Conditions conditions = create 
             (Conditions.class, Conditions.DEFAULT_ELEMENT_NAME);
-        conditions.setNotBefore (now.minusSeconds (10));
-        conditions.setNotOnOrAfter (now.plusMinutes (30));
-        assertion.setConditions (conditions);
+        conditions.setNotBefore (now.minusSeconds (3600));
+        conditions.setNotOnOrAfter (now.plusMinutes (300));
+//        assertion.setConditions (conditions);
 
         return assertion;
     }

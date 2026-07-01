@@ -5,6 +5,8 @@ import com.bw.saml.cc.saml.SAML;
 import com.bw.saml.cc.saml.SAMLAssertion;
 import com.bw.saml.cc.saml.SAMLSignature;
 import com.bw.saml.constants.Constants;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.opensaml.saml2.core.*;
 import org.opensaml.saml2.core.impl.AttributeStatementBuilder;
 import org.springframework.stereotype.Service;
@@ -53,11 +55,13 @@ public class SamlResponseGenerator {
      * @return
      * @throws Exception
      */
-    public String generateSamlResponse(String email, AuthnRequestField requestField) throws Exception {
+    public String generateSamlResponse(String domainName, String username, String email, AuthnRequestField requestField) throws Exception {
         init(email,requestField);
         SAML saml = new SAML(Constants.IDP_ENTITY_ID);
+
         //创建Subject
-        Subject subject = saml.createSubject(email, NameID.EMAIL,"bearer", this.acsUrl, requestField.getRequestId());
+//        Subject subject = saml.createSubject(email, NameID.EMAIL,"bearer", this.acsUrl, requestField.getRequestId());
+        Subject subject = saml.createSubject(username, NameID.UNSPECIFIED,"bearer", this.acsUrl, requestField.getRequestId());
 
         //创建断言Assertion
         String assertionId = UUID.randomUUID().toString();
@@ -66,15 +70,20 @@ public class SamlResponseGenerator {
         assertion.setSubject(subject);
 
         AttributeStatementBuilder attrBuilder = new AttributeStatementBuilder();
-        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_xUserId", "jszn_idp_test"));
-//        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_name", "jszn_idp_test"));
+        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_xUserId", username));
+        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_name", username));
 //        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_redirect_url", ""));
         assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_domain_id", "b074064339c043a3a7e522e0756ab73c"));
-//        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_domain_id", "769f0a57995d4c1d8856710f3c79a8bb"));
+        assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_domain_name", domainName));
         assertion.getAttributeStatements().add(saml.buildAttributeStatement("IAM_SAML_Attributes_idp_id", "idp_gs_saml_iam_new"));
+
+        DateTime now = new DateTime ();
+        assertion.getConditions().setNotBefore(now.minusMinutes(15));
+        assertion.getConditions().setNotOnOrAfter(now.plusMinutes(15));
 
         //创建response
         Response response = saml.createResponse(assertion, inResponseTo);
+
         //签名
         SAMLSignature samlSignature = new SAMLSignature();
         Document document = saml.asDOMDocument(response);
@@ -94,23 +103,42 @@ public class SamlResponseGenerator {
         return result;
     }
 
+    public String getForm(String url, String relayState, String response) {
+        if (StringUtils.isNotEmpty(relayState)) {
+            return "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n" +
+                    "<head>\n" +
+                    "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n" +
+                    "<title>POST data</title>\n" +
+                    "</head>\n" +
+                    "<body onload=\"document.forms[0].submit()\">\n" +
+                    "<noscript>\n" +
+                    "<p><strong>Note:</strong> Since your browser does not support JavaScript, you must press the button below once to proceed.</p>\n" +
+                    "</noscript>\n" +
+                    "\t<form method=\"post\" action=\"" + url + "\">\n" +
+                    "\t\t<input type=\"hidden\" name=\"SAMLResponse\" value=\"" + response + "\"/><br/>\n" +
+                    "\t\t<input type=\"hidden\" name=\"RelayState\" value=\"" + relayState + "\"/><br/>\n" +
+                    "\t\t<noscript><input type=\"submit\" value=\"Submit\" /></noscript>\n" +
+                    "\t</form>\n" +
+                    "</body>\n" +
+                    "</html>";
+        } else {
+            return "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n" +
+                    "<head>\n" +
+                    "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n" +
+                    "<title>POST data</title>\n" +
+                    "</head>\n" +
+                    "<body onload=\"document.forms[0].submit()\">\n" +
+                    "<noscript>\n" +
+                    "<p><strong>Note:</strong> Since your browser does not support JavaScript, you must press the button below once to proceed.</p>\n" +
+                    "</noscript>\n" +
+                    "\t<form method=\"post\" action=\"" + url + "\">\n" +
+                    "\t\t<input type=\"hidden\" name=\"SAMLResponse\" value=\"" + response + "\"/><br/>\n" +
+                    "\t\t<noscript><input type=\"submit\" value=\"Submit\" /></noscript>\n" +
+                    "\t</form>\n" +
+                    "</body>\n" +
+                    "</html>";
+        }
 
-    public String getForm(String url,String response){
-        return "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n" +
-                "<head>\n" +
-                "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n" +
-                "<title>POST data</title>\n" +
-                "</head>\n" +
-                "<body onload=\"document.forms[0].submit()\">\n" +
-                "<noscript>\n" +
-                "<p><strong>Note:</strong> Since your browser does not support JavaScript, you must press the button below once to proceed.</p>\n" +
-                "</noscript>\n" +
-                "\t<form method=\"post\" action=\"" + url + "\">\n" +
-                "\t\t<input type=\"hidden\" name=\"SAMLResponse\" value=\"" + response + "\"/><br/>\n" +
-                "\t\t<noscript><input type=\"submit\" value=\"Submit\" /></noscript>\n" +
-                "\t</form>\n" +
-                "</body>\n" +
-                "</html>";
     }
     public static void main(String[] args) {
         System.out.println(UUID.randomUUID().toString());
